@@ -11,6 +11,8 @@ def cleanInnerHTML(s):
 	for i in s:
 		if (i.isnumeric() or i == '$'):
 			r += i
+		if(i == 'მ'):
+			break
 	return r
 
 def chooseBuildingType(driver):
@@ -74,7 +76,6 @@ def createHTMLList(driver):
 	url_list = []
 	time.sleep(3)
 	lim = driver.find_element(By.CSS_SELECTOR,"div.sc-1384a2b8-10:nth-child(6)").get_attribute('innerHTML')
-	print(lim)
 	l = 0
 	url = driver.current_url
 	for i in range (0,int(lim)):
@@ -83,14 +84,12 @@ def createHTMLList(driver):
 			url = url[0:url.rfind('&')]	
 		url += app_str
 		url_list.append(url)
-		print(url)
 	for i in url_list:
 		response = requests.get(i)
 		ht = BeautifulSoup(response.text,"lxml")
 		html_list.append(ht)
 		print(l)
 		l = l + 1
-	print("html list size: " + str(len(html_list)))
 	return html_list
 
 def getInformation(html_list):
@@ -103,12 +102,24 @@ def getInformation(html_list):
 	info_list = []
 	for i in html_list:
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
-		for j in price_elements:
+		address_elements = i.find_all("h5",class_="sc-bc0f943e-12 kIDemC listing-detailed-item-address")
+		baf_elements = i.find_all("div",class_="sc-bc0f943e-13 bbhwop")
+		for j in range(0,len(price_elements)):
 			elem_dict = dict()
-			a = j.decode_contents()
-			elem_dict.update({"price":cleanInnerHTML(a)})
+			pr = price_elements[j].decode_contents()
+			address = address_elements[j].get_text(strip = True)
+			baf_tag = baf_elements[j]
+			area = baf_tag.select("div:first-child")[0].get_text(strip=True)
+			bedrooms = baf_tag.select("div:nth-of-type(2)")[0].get_text(strip=True)
+			floor = baf_tag.select("div:nth-of-type(3)")[0].get_text(strip=True)
+			print(type(bedrooms))
+			print(bedrooms)
+			elem_dict.update({"price":cleanInnerHTML(pr)})
+			elem_dict.update({"address":address})
+			elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
+			elem_dict.update({"bedrooms":bedrooms})
+			elem_dict.update({"floor":floor})
 			info_list.append(elem_dict)
-	print(len(info_list))
 	return info_list
 		
 		
