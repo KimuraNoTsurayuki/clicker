@@ -1,9 +1,17 @@
 from selenium import webdriver
-import requests
 from bs4 import BeautifulSoup
 import time
+import requests
+from lxml import etree
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+
+def cleanInnerHTML(s):
+	r = str()
+	for i in s:
+		if (i.isnumeric() or i == '$'):
+			r += i
+	return r
 
 def chooseBuildingType(driver):
 	driver.find_element(By.CLASS_NAME, "icon-chair").click()
@@ -51,7 +59,7 @@ def choosePriceRange(driver):
 
 def searchApartments(driver):
 	driver.find_element(By.CSS_SELECTOR,"button.dICGws:nth-child(1)").click()
-	
+#-------------------
 def writeInfoInFile(data,name):
 	f = open(name,"w")
 	f.write(data)
@@ -60,56 +68,45 @@ def writeInfoInFile(data,name):
 def createIdentifier(url):
 	return url[url.rfind("-")+1:]
 	
-def nextPageCSSSelector(current_page):
-	next_page_css_number = current_page + 2
-	return f"div.sc-1384a2b8-10:nth-child({next_page_css_number})"
+#------------------------------------
+def createHTMLList(driver):
+	html_list = []
+	url_list = []
+	time.sleep(3)
+	lim = driver.find_element(By.CSS_SELECTOR,"div.sc-1384a2b8-10:nth-child(6)").get_attribute('innerHTML')
+	print(lim)
+	l = 0
+	url = driver.current_url
+	for i in range (0,int(lim)):
+		app_str = f"&page={i+1}"
+		if i >= 1:
+			url = url[0:url.rfind('&')]	
+		url += app_str
+		url_list.append(url)
+		print(url)
+	for i in url_list:
+		response = requests.get(i)
+		ht = BeautifulSoup(response.text,"lxml")
+		html_list.append(ht)
+		print(l)
+		l = l + 1
+	print("html list size: " + str(len(html_list)))
+	return html_list
+
+def getInformation(html_list):
+	print("In getinfo")
+	#url_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]"
+	#location_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/h5"
+	#price_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[1]/span[1]"
+	#area_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[2]/div[1]"
+	#floor_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[2]/div[3]"
+	price_list = []
+	for i in html_list:
+		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
+		for j in price_elements:
+			a = j.decode_contents()
+			price_list.append(cleanInnerHTML(a))
+	print(len(price_list))
 		
-def pageTurner(driver, next_page):
-	driver.find_element(By.CSS_SELECTOR,next_page).click()
-	
-
-def createDictionary(driver):
-	rset = dict()
-	for i in range(1,17):
-		url_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]"
-		location_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/h5"
-		price_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[1]/span[1]"
-		area_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[2]/div[1]"
-		floor_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[2]/div[3]"
-		url = driver.find_element(By.XPATH,url_address).get_attribute('href')
-		identifier = createIdentifier(url)
-		address = driver.find_element(By.XPATH,location_address).get_attribute('innerHTML').removeprefix("<span class=\"icon-location_on-fill\" style=\"max-width: 1em; overflow: hidden;\"></span>")
-		price = driver.find_element(By.XPATH,price_address).get_attribute('innerHTML')
-		area = driver.find_element(By.XPATH,area_address).get_attribute('innerHTML').removeprefix("<span class=\"icon-crop_free\" style=\"max-width: 1em; overflow: hidden;\"></span>")
-		floor = driver.find_element(By.XPATH,floor_address).get_attribute('innerHTML').removeprefix("<span class=\"icon-stairs\" style=\"max-width: 1em; overflow: hidden;\"></span>")
-		rset.update({"Identifier" : identifier})
-		rset.update({"url" : url})
-		rset.update({"price" : price})
-		rset.update({"address" : address})
-		rset.update({"area" : area})
-		rset.update({"floor" : floor})
-		url = None
-		identifier = None
-		address = None 
-		price = None 
-		area = None
-		floor = None
-	return rset
-
-def getInformation(driver):
-	rset = dict()
-	arrdicts = []
-	current_page = 1
-	next_page = nextPageCSSSelector(current_page)
-	while(driver.find_element(By.CSS_SELECTOR,next_page).is_enabled()):
-			a = createDictionary(driver) #Gives
-			arrdicts.append(a)
-			pageTurner(driver,next_page) #page changes here
-			current_page = current_page + 1
-			next_page = nextPageCSSSelector(current_page)
-			WebDriverWait(driver,5).until()
-	arrdicts.append(createDictionary(driver))
-	return arrdicts
 		
-
 
