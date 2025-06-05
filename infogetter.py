@@ -100,13 +100,16 @@ def getInformation(html_list):
 	#price_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[1]/span[1]"
 	#area_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[2]/div[1]"
 	#floor_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[2]/div[3]"
-	price_list = []
+	info_list = []
 	for i in html_list:
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
 		for j in price_elements:
+			elem_dict = dict()
 			a = j.decode_contents()
-			price_list.append(cleanInnerHTML(a))
-	print(len(price_list))
+			elem_dict.update({"price":cleanInnerHTML(a)})
+			info_list.append(elem_dict)
+	print(len(info_list))
+	return info_list
 		
 		
 
