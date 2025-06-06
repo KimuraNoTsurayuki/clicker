@@ -15,7 +15,7 @@ def cleanInnerHTML(s):
 			break
 	return r
 
-def chooseBuildingType(driver):
+def chooseBuildingType(driver,building_type):
 	driver.find_element(By.CLASS_NAME, "icon-chair").click()
 	building_type = input("1 for new, 2 for old, 3 for construction: ")
 	match building_type:

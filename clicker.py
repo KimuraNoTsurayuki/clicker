@@ -3,8 +3,11 @@ import time
 import infogetter
 import jsonwriter
 
-		
-driver = webdriver.Chrome()
+
+gui.startGUI()
+options = webdriver.ChromeOptions()
+options.add_argument('--headless=new')
+driver = webdriver.Chrome(options = options)
 ws = driver.get("https://home.ss.ge")
 driver.implicitly_wait(5)
 infogetter.chooseBuildingType(driver)
