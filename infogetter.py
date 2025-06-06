@@ -6,6 +6,7 @@ from lxml import etree
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+
 def cleanInnerHTML(s):
 	r = str()
 	for i in s:
@@ -17,7 +18,7 @@ def cleanInnerHTML(s):
 
 def chooseBuildingType(driver,building_type):
 	driver.find_element(By.CLASS_NAME, "icon-chair").click()
-	building_type = input("1 for new, 2 for old, 3 for construction: ")
+	#1 for new, 2 for old, 3 for construction
 	match building_type:
 		case "1":
 			building_elements = driver.find_element(By.XPATH,"/html/body/div[1]/main/div/div[2]/div/div[2]/div/div/div[2]/div[2]/div/div[1]")
@@ -29,11 +30,10 @@ def chooseBuildingType(driver,building_type):
 	b = driver.find_element(By.XPATH,"/html/body/div[1]/main/div/div[2]/div/div[2]/div/div/div[2]/div[3]/button[2]")
 	b.click()
 
-def chooseLocation(driver):
-	location = input("1 for Vake, 2 for Saburtalo: ")
+def chooseLocation(driver,building_location):
 	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-0:nth-child(2)").click()
 	driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-	match location:
+	match building_location:
 		case "1":
 			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(3)")
 		case "2":
@@ -41,18 +41,14 @@ def chooseLocation(driver):
 	property_location.click()
 	driver.find_element(By.CSS_SELECTOR,".ieRIPq").click()
 
-def chooseSurfaceArea(driver):
+def chooseSurfaceArea(driver,lower_area_bound,upper_area_bound):
 	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-0:nth-child(3) > span:nth-child(2)").click()
-	lower_area_bound = input("Area lower bound: ")
-	upper_area_bound = input("Area upper bound: ")
 	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-46:nth-child(1) > input:nth-child(1)").send_keys(lower_area_bound)
 	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-46:nth-child(2) > input:nth-child(1)").send_keys(upper_area_bound)
 	driver.find_element(By.CSS_SELECTOR, ".sc-dbb89033-49 > button:nth-child(2)").click()
 
 
-def choosePriceRange(driver):
-	lower_price_bound = input("Lower price bound: ")
-	upper_price_bound = input("Upper price bound: ")
+def choosePriceRange(driver,lower_price_bound,upper_price_bound):
 	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-0:nth-child(4) > span:nth-child(2)").click()
 	driver.find_element(By.CSS_SELECTOR,".currency-box > span:nth-child(3)").click()
 	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-46:nth-child(1) > input:nth-child(1)").send_keys(lower_price_bound)
@@ -112,8 +108,6 @@ def getInformation(html_list):
 			area = baf_tag.select("div:first-child")[0].get_text(strip=True)
 			bedrooms = baf_tag.select("div:nth-of-type(2)")[0].get_text(strip=True)
 			floor = baf_tag.select("div:nth-of-type(3)")[0].get_text(strip=True)
-			print(type(bedrooms))
-			print(bedrooms)
 			elem_dict.update({"price":cleanInnerHTML(pr)})
 			elem_dict.update({"address":address})
 			elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
