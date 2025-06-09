@@ -1,6 +1,6 @@
 import sys
 import infogetter as info
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QTextEdit, QPlainTextEdit,QPushButton,QGridLayout
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QTextEdit, QPlainTextEdit,QPushButton,QGridLayout,QHBoxLayout
 
 building_type_to_send = str()
 building_location_to_send = str()
@@ -13,7 +13,10 @@ class BasicGUI(QWidget):
 	def __init__(self):
 		super().__init__()
 
-		self.layout = QGridLayout()
+		self.layout = QVBoxLayout()
+		self.layout2 = QHBoxLayout()
+		self.layout3 = QHBoxLayout()
+		self.layout4 = QHBoxLayout()
 
 
 		self.minsurf = QLineEdit()
@@ -46,14 +49,16 @@ class BasicGUI(QWidget):
 		self.layout.addWidget(self.maxsurf)
 		self.layout.addWidget(self.minamount)
 		self.layout.addWidget(self.maxamount)
-		self.layout.addWidget(self.vake_button)
-		self.layout.addWidget(self.saburtalo_button)
-		self.layout.addWidget(self.new_building_button)
-		self.layout.addWidget(self.old_building_button)
-		self.layout.addWidget(self.being_constructed)
-		self.layout.addWidget(self.enter_button)
+		self.layout2.addWidget(self.vake_button)
+		self.layout2.addWidget(self.saburtalo_button)
+		self.layout3.addWidget(self.new_building_button)
+		self.layout3.addWidget(self.old_building_button)
+		self.layout3.addWidget(self.being_constructed)
+		self.layout4.addWidget(self.enter_button)
 	
-
+		self.layout.addLayout(self.layout2)
+		self.layout.addLayout(self.layout3)
+		self.layout.addLayout(self.layout4)
 		self.setLayout(self.layout)
 		self.setWindowTitle(QApplication.translate("toplevel","AIC"))
 		
