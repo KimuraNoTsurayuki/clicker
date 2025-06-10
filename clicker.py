@@ -5,8 +5,6 @@ import jsonwriter
 import sys
 import gui as g
 
-
-
 if __name__ == '__main__':
 	options = webdriver.ChromeOptions()
 	options.add_argument('--headless=new')
@@ -35,11 +33,8 @@ if __name__ == '__main__':
 	info.chooseSurfaceArea(driver,area_lower_bound,area_upper_bound)
 	info.choosePriceRange(driver,price_lower_bound,price_upper_bound)
 	info.searchApartments(driver)
-	html_list = g.info.createHTMLList(driver)
-	info_list = g.info.getInformation(html_list)
+	html_list = info.createHTMLList(driver)
+	info_list = info.getInformation(html_list)
 	jsonwriter.setName(building_location,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound)
 	jsonwriter.writeJSONFile(info_list)
-	time.sleep(10)
 	driver.close()
-
-

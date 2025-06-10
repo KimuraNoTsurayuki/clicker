@@ -6,7 +6,6 @@ from lxml import etree
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-
 def cleanInnerHTML(s):
 	r = str()
 	for i in s:
@@ -96,11 +95,6 @@ def createHTMLList(driver):
 
 def getInformation(html_list):
 	print("In getinfo")
-	#url_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]"
-	#location_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/h5"
-	#price_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[1]/span[1]"
-	#area_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[2]/div[1]"
-	#floor_address = f"/html/body/div[1]/main/div[2]/div[3]/div[1]/a[{i}]/div/div[4]/div[2]/div[3]"
 	info_list = []
 	for i in html_list:
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
@@ -108,6 +102,7 @@ def getInformation(html_list):
 		baf_elements = i.find_all("div",class_="sc-bc0f943e-13 bbhwop")
 		url_elements_div = i.find("div",class_="sc-1384a2b8-6 jlmink")
 		url_elements = url_elements_div.find_all("a")
+		img_url_div = i.find_all("div",class_="sc-4bb73884-5 hUtkPJ")
 		for j in range(0,len(price_elements)):
 			elem_dict = dict()
 			pr = price_elements[j].decode_contents()
@@ -117,15 +112,15 @@ def getInformation(html_list):
 			bedrooms = baf_tag.select("div:nth-of-type(2)")[0].get_text(strip=True)
 			floor = baf_tag.select("div:nth-of-type(3)")[0].get_text(strip=True)
 			url = url_elements[j].get("href")
-			elem_dict.update({"url": url})
+			img_urls = img_url_div[0].find_all("img")
+			elem_dict.update({"url": "https://home.ss.ge" + url})
 			elem_dict.update({"identifier": createIdentifier(url)})
 			elem_dict.update({"price":cleanInnerHTML(pr)})
 			elem_dict.update({"address":address})
 			elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
 			elem_dict.update({"bedrooms":bedrooms})
 			elem_dict.update({"floor":floor})
+			for k in range(0,len(img_urls)):
+				elem_dict.update({f"Img{k+1}":img_urls[k]["src"]})
 			info_list.append(elem_dict)
 	return info_list
-		
-		
-
