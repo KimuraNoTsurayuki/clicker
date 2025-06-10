@@ -37,6 +37,7 @@ if __name__ == '__main__':
 	info.searchApartments(driver)
 	html_list = g.info.createHTMLList(driver)
 	info_list = g.info.getInformation(html_list)
+	jsonwriter.setName(building_location,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound)
 	jsonwriter.writeJSONFile(info_list)
 	time.sleep(10)
 	driver.close()
