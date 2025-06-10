@@ -64,11 +64,11 @@ class BasicGUI(QWidget):
 		
 	def setVake(self):
 		global building_location_to_send
-		building_location_to_send = "1"
+		building_location_to_send = "2"
 	
 	def setSaburtalo(self):
 		global building_location_to_send
-		building_location_to_send = "2"
+		building_location_to_send = "1"
 
 	def setNumericalValues(self):
 		area_to_send_lower = self.setLowerAreaBound()

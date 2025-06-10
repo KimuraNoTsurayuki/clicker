@@ -68,24 +68,30 @@ def createIdentifier(url):
 	
 #------------------------------------
 def createHTMLList(driver):
+	print("Creating list")
 	html_list = []
 	url_list = []
-	time.sleep(3)
 	lim = driver.find_element(By.CSS_SELECTOR,"div.sc-1384a2b8-10:nth-child(6)").get_attribute('innerHTML')
+	print("limit is " + lim)
 	l = 0
 	url = driver.current_url
-	for i in range (0,int(lim)):
-		app_str = f"&page={i+1}"
-		if i >= 1:
-			url = url[0:url.rfind('&')]	
-		url += app_str
-		url_list.append(url)
-	for i in url_list:
-		response = requests.get(i)
+	if (int(lim) > 0):
+		for i in range (0,int(lim)):
+			app_str = f"&page={i+1}"
+			if i >= 1:
+				url = url[0:url.rfind('&')]	
+			url += app_str
+			url_list.append(url)
+		for i in url_list:
+			response = requests.get(i)
+			ht = BeautifulSoup(response.text,"lxml")
+			html_list.append(ht)
+			print(l)
+			l = l + 1
+	else:
+		response = requests.get(url)
 		ht = BeautifulSoup(response.text,"lxml")
-		html_list.append(ht)
-		print(l)
-		l = l + 1
+		html_list.append()
 	return html_list
 
 def getInformation(html_list):
@@ -100,6 +106,8 @@ def getInformation(html_list):
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
 		address_elements = i.find_all("h5",class_="sc-bc0f943e-12 kIDemC listing-detailed-item-address")
 		baf_elements = i.find_all("div",class_="sc-bc0f943e-13 bbhwop")
+		url_elements_div = i.find("div",class_="sc-1384a2b8-6 jlmink")
+		url_elements = url_elements_div.find_all("a")
 		for j in range(0,len(price_elements)):
 			elem_dict = dict()
 			pr = price_elements[j].decode_contents()
@@ -108,6 +116,9 @@ def getInformation(html_list):
 			area = baf_tag.select("div:first-child")[0].get_text(strip=True)
 			bedrooms = baf_tag.select("div:nth-of-type(2)")[0].get_text(strip=True)
 			floor = baf_tag.select("div:nth-of-type(3)")[0].get_text(strip=True)
+			url = url_elements[j].get("href")
+			elem_dict.update({"url": url})
+			elem_dict.update({"identifier": createIdentifier(url)})
 			elem_dict.update({"price":cleanInnerHTML(pr)})
 			elem_dict.update({"address":address})
 			elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
