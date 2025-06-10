@@ -8,8 +8,8 @@ import gui as g
 
 
 if __name__ == '__main__':
-	#options = webdriver.ChromeOptions()
-	#options.add_argument('--headless=new')
+	options = webdriver.ChromeOptions()
+	options.add_argument('--headless=new')
 	driver = webdriver.Chrome()
 	app = g.QApplication(sys.argv)
 	window = g.BasicGUI()
