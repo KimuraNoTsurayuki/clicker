@@ -20,12 +20,14 @@ if __name__ == '__main__':
 	area_upper_bound = g.area_to_send_upper
 	price_lower_bound = g.price_to_send_lower
 	price_upper_bound = g.price_to_send_upper
+	filter_strength = g.filter_strength
 	print("building type: " + building_type)
 	print("building location: " + building_location)
 	print("area lower: " + str(area_lower_bound))
 	print("area upper: " + str(area_upper_bound))
 	print("price lower: " + str(price_lower_bound))
 	print("price upper: " + str(price_upper_bound))
+	print("filter strength: " + str(filter_strength))
 	ws = driver.get("https://home.ss.ge")
 	driver.implicitly_wait(5)
 	info.chooseBuildingType(driver,building_type)
@@ -35,7 +37,7 @@ if __name__ == '__main__':
 	info.searchApartments(driver)
 	html_list = info.createHTMLList(driver)
 	info_list = info.getInformation(html_list)
-	refined_info_list = info.filterInfoList(info_list)
-	jsonwriter.setName(building_location,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound)
+	refined_info_list = info.filterInfoList(info_list,filter_strength)
+	jsonwriter.setName(building_location,filter_strength,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound)
 	jsonwriter.writeJSONFile(refined_info_list)
 	driver.close()

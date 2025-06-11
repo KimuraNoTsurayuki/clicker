@@ -8,6 +8,7 @@ area_to_send_lower = 0
 area_to_send_upper = 0
 price_to_send_lower = 0
 price_to_send_upper = 0
+filter_strength = 0
 
 class BasicGUI(QWidget):
 	def __init__(self):
@@ -23,6 +24,7 @@ class BasicGUI(QWidget):
 		self.maxsurf = QLineEdit()
 		self.minamount = QLineEdit()
 		self.maxamount = QLineEdit()
+		self.filterstrength = QLineEdit()
 
 		self.enter_button = QPushButton("Enter")
 		self.vake_button = QPushButton("Vake")
@@ -35,7 +37,8 @@ class BasicGUI(QWidget):
 		self.minsurf.setPlaceholderText("Minimum Surface Area")
 		self.maxsurf.setPlaceholderText("Maximum Surface Area")
 		self.minamount.setPlaceholderText("Price Minimum")
-		self.maxamount.setPlaceholderText("Price Maximum")	
+		self.maxamount.setPlaceholderText("Price Maximum")
+		self.filterstrength.setPlaceholderText("Set Filter Strength. Lower number filters more. 2<= str <= 7")	
 		
 		self.vake_button.clicked.connect(self.setVake)
 		self.saburtalo_button.clicked.connect(self.setSaburtalo)
@@ -49,6 +52,7 @@ class BasicGUI(QWidget):
 		self.layout.addWidget(self.maxsurf)
 		self.layout.addWidget(self.minamount)
 		self.layout.addWidget(self.maxamount)
+		self.layout.addWidget(self.filterstrength)
 		self.layout2.addWidget(self.vake_button)
 		self.layout2.addWidget(self.saburtalo_button)
 		self.layout3.addWidget(self.new_building_button)
@@ -75,6 +79,7 @@ class BasicGUI(QWidget):
 		area_to_send_upper = self.setUpperAreaBound()
 		price_to_send_lower = self.setLowerPriceBound()
 		price_to_send_upper = self.setUpperPriceBound()
+		filter_strength = self.setFilterStrength()
 		QApplication.quit()		
 		
 	def setNewBuilding(self):
@@ -104,3 +109,8 @@ class BasicGUI(QWidget):
 	def setUpperPriceBound(self):
 		global price_to_send_upper
 		price_to_send_upper = int(self.maxamount.text())
+	
+	def setFilterStrength(self):
+		global filter_strength
+		filter_strength = int(self.filterstrength.text())
+		

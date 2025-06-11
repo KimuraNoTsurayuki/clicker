@@ -147,12 +147,12 @@ def infoEquality(info1, info2,filter_strength):
 	else:
 		return False	
 	
-def filterInfoList(info_list):
+def filterInfoList(info_list,filter_strength):
 	res = []
 	take_out = set()
 	for i in range(0,len(info_list)):
 		for j in range(i+1,len(info_list)):
-			if(infoEquality(info_list[i],info_list[j],3)):
+			if(infoEquality(info_list[i],info_list[j],filter_strength)):
 				take_out.add(j)
 	for k in range(0,len(info_list)):
 		if k not in take_out:
