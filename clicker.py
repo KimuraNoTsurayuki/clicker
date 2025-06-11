@@ -8,7 +8,7 @@ import gui as g
 if __name__ == '__main__':
 	options = webdriver.ChromeOptions()
 	options.add_argument('--headless=new')
-	driver = webdriver.Chrome()
+	driver = webdriver.Chrome(options = options)
 	app = g.QApplication(sys.argv)
 	window = g.BasicGUI()
 	window.resize(500,500)
@@ -35,6 +35,7 @@ if __name__ == '__main__':
 	info.searchApartments(driver)
 	html_list = info.createHTMLList(driver)
 	info_list = info.getInformation(html_list)
+	refined_info_list = info.filterInfoList(info_list)
 	jsonwriter.setName(building_location,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound)
-	jsonwriter.writeJSONFile(info_list)
+	jsonwriter.writeJSONFile(refined_info_list)
 	driver.close()

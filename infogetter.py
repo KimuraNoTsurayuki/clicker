@@ -124,3 +124,42 @@ def getInformation(html_list):
 				elem_dict.update({f"Img{k+1}":img_urls[k]["src"]})
 			info_list.append(elem_dict)
 	return info_list
+	
+def infoEquality(info1, info2,filter_strength):
+	lim = 0
+
+	if(info1["price"] == info2["price"]):
+		lim = lim + 1
+	if(info1["area (m^2)"] == info2["area (m^2)"]):
+		lim = lim + 1
+	if(info1["bedrooms"] == info2["bedrooms"]):
+		lim = lim + 1
+	if(info1["floor"] == info2["floor"]):
+		lim = lim + 1
+	if(info1["Img1"] == info2["Img1"]):
+		lim = lim + 1
+	if(info1["Img2"] == info2["Img2"]):
+		lim = lim + 1
+	if(info1["Img3"] == info2["Img3"]):
+		lim = lim + 1
+	if (lim >= filter_strength and info1["address"] == info2["address"]):
+		return True
+	else:
+		return False	
+	
+def filterInfoList(info_list):
+	res = []
+	take_out = set()
+	for i in range(0,len(info_list)):
+		for j in range(i+1,len(info_list)):
+			if(infoEquality(info_list[i],info_list[j],3)):
+				take_out.add(j)
+	for k in range(0,len(info_list)):
+		if k not in take_out:
+			res.append(info_list[k])
+	print(take_out)
+	print(len(res))
+	return res
+		
+		
+		
