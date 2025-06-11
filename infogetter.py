@@ -70,10 +70,13 @@ def createHTMLList(driver):
 	print("Creating list")
 	html_list = []
 	url_list = []
-	lim = driver.find_element(By.CSS_SELECTOR,"div.sc-1384a2b8-10:nth-child(6)").get_attribute('innerHTML')
+	limit_getter = driver.find_element(By.CSS_SELECTOR,".sc-1384a2b8-9")
+	limit_elements = limit_getter.find_elements(By.TAG_NAME,"div")
+	print(len(limit_elements))
+	lim = limit_elements[-2].get_attribute("innerHTML")
 	print("limit is " + lim)
-	l = 0
 	url = driver.current_url
+	l = 0
 	if (int(lim) > 0):
 		for i in range (0,int(lim)):
 			app_str = f"&page={i+1}"
@@ -157,8 +160,6 @@ def filterInfoList(info_list,filter_strength):
 	for k in range(0,len(info_list)):
 		if k not in take_out:
 			res.append(info_list[k])
-	print(take_out)
-	print(len(res))
 	return res
 		
 		
