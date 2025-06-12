@@ -9,11 +9,20 @@ from selenium.webdriver.common.keys import Keys
 def cleanInnerHTML(s):
 	r = str()
 	for i in s:
-		if (i.isnumeric() or i == '$'):
+		if (i.isnumeric() or i == '.'):
 			r += i
 		if(i == 'მ'):
 			break
 	return r
+
+def choosePurchaseType(driver, pt):
+	match pt:
+		#1 is sale. 2 is rent.
+		case "1":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-53:nth-child(1)").click()
+		case "2":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-53:nth-child(2)").click()
+
 
 def chooseBuildingType(driver,building_type):
 	driver.find_element(By.CLASS_NAME, "icon-chair").click()
@@ -54,6 +63,10 @@ def choosePriceRange(driver,lower_price_bound,upper_price_bound):
 	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-46:nth-child(2) > input:nth-child(1)").send_keys(upper_price_bound)
 	driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-49 > button:nth-child(2)").click()
 
+def insertTextString(driver,text):
+	if(len(text) > 0):
+		driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-3").send_keys(text)
+
 def searchApartments(driver):
 	driver.find_element(By.CSS_SELECTOR,"button.dICGws:nth-child(1)").click()
 #-------------------
@@ -70,10 +83,12 @@ def createHTMLList(driver):
 	print("Creating list")
 	html_list = []
 	url_list = []
-	limit_getter = driver.find_element(By.CSS_SELECTOR,".sc-1384a2b8-9")
-	limit_elements = limit_getter.find_elements(By.TAG_NAME,"div")
-	print(len(limit_elements))
-	lim = limit_elements[-2].get_attribute("innerHTML")
+	try:
+		limit_getter = driver.find_element(By.CSS_SELECTOR,".sc-1384a2b8-9")
+		limit_elements = limit_getter.find_elements(By.TAG_NAME,"div")
+		lim = limit_elements[-2].get_attribute("innerHTML")
+	except:
+		lim = '0'
 	print("limit is " + lim)
 	url = driver.current_url
 	l = 0
@@ -93,7 +108,7 @@ def createHTMLList(driver):
 	else:
 		response = requests.get(url)
 		ht = BeautifulSoup(response.text,"lxml")
-		html_list.append()
+		html_list.append(ht)
 	return html_list
 
 def getInformation(html_list):
@@ -118,7 +133,7 @@ def getInformation(html_list):
 			img_urls = img_url_div[0].find_all("img")
 			elem_dict.update({"url": "https://home.ss.ge" + url})
 			elem_dict.update({"identifier": createIdentifier(url)})
-			elem_dict.update({"price":cleanInnerHTML(pr)})
+			elem_dict.update({"price($)":cleanInnerHTML(pr)})
 			elem_dict.update({"address":address})
 			elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
 			elem_dict.update({"bedrooms":bedrooms})
@@ -131,7 +146,7 @@ def getInformation(html_list):
 def infoEquality(info1, info2,filter_strength):
 	lim = 0
 
-	if(info1["price"] == info2["price"]):
+	if(info1["price($)"] == info2["price($)"]):
 		lim = lim + 1
 	if(info1["area (m^2)"] == info2["area (m^2)"]):
 		lim = lim + 1
