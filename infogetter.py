@@ -2,6 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import time
 import requests
+from requests.exceptions import ChunkedEncodingError
 from lxml import etree
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -78,6 +79,14 @@ def writeInfoInFile(data,name):
 def createIdentifier(url):
 	return url[url.rfind("-")+1:]
 	
+def reviseHTML(driver,html,page_num):
+	try:
+		html.find_all("div",class_="sc-1384a2b8-6 jlmink")
+	except:
+		response = requests.get(driver.current_url + f"&page={page_num + 1}")
+		html = BeautifulSoup(response.text(),"lxml")
+		print("Caught")
+	return html
 #------------------------------------
 def createHTMLList(driver):
 	print("Creating list")
@@ -100,7 +109,10 @@ def createHTMLList(driver):
 			url += app_str
 			url_list.append(url)
 		for i in url_list:
-			response = requests.get(i)
+			try :
+				response = requests.get(i)
+			except ChunkedEncodingError:
+				response = requests.get(i)
 			ht = BeautifulSoup(response.text,"lxml")
 			html_list.append(ht)
 			print(l)
@@ -111,16 +123,24 @@ def createHTMLList(driver):
 		html_list.append(ht)
 	return html_list
 
-def getInformation(html_list):
+
+def getInformation(driver,html_list):
 	print("In getinfo")
 	info_list = []
+	l = 0
 	for i in html_list:
+		print(l)
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
 		address_elements = i.find_all("h5",class_="sc-bc0f943e-12 kIDemC listing-detailed-item-address")
 		baf_elements = i.find_all("div",class_="sc-bc0f943e-13 bbhwop")
-		url_elements_div = i.find("div",class_="sc-1384a2b8-6 jlmink")
+		try:
+			url_elements_div = i.find("div",class_="sc-1384a2b8-6 jlmink")
+		except AttributeError:
+			i = reviseHTML(driver,i,l)
+			url_elements_div = i.find_all("div",class_="sc-1384a2b8-6 jlmink")
 		url_elements = url_elements_div.find_all("a")
 		img_url_div = i.find_all("div",class_="sc-4bb73884-5 hUtkPJ")
+		l = l + 1
 		for j in range(0,len(price_elements)):
 			elem_dict = dict()
 			pr = price_elements[j].decode_contents()
