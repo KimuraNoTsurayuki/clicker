@@ -78,15 +78,33 @@ def writeInfoInFile(data,name):
 	
 def createIdentifier(url):
 	return url[url.rfind("-")+1:]
+
+#-------------------------------------------	
+def testHTML(driver,html,page_num):
+	rets = 5
+	res = None
+	for i in range(0,rets):
+		try:
+			url_elements_div = html.find("div",class_="sc-1384a2b8-6 jlmink")
+			url_elements = url_elements_div.find_all("a")
+		except AttributeError:
+			response = requests.get(driver.current_url + f"&page={page_num + 1}")
+			print("Caught html")
+			html = BeautifulSoup(response.text,"lxml")
+	print(type(url_elements))
+	return url_elements
 	
-def reviseHTML(driver,html,page_num):
-	try:
-		html.find_all("div",class_="sc-1384a2b8-6 jlmink")
-	except:
-		response = requests.get(driver.current_url + f"&page={page_num + 1}")
-		html = BeautifulSoup(response.text(),"lxml")
-		print("Caught")
-	return html
+def tryRequesting(url):
+	rets = 5
+	response = None
+	for i in range(0,rets):
+		try:
+			response = requests.get(url)
+			if(str(type(response)) == '<class \'requests.models.Response\'>'):
+				break
+		except ChunkedEncodingError:
+			print("Caught chunks")
+	return response
 #------------------------------------
 def createHTMLList(driver):
 	print("Creating list")
@@ -109,16 +127,13 @@ def createHTMLList(driver):
 			url += app_str
 			url_list.append(url)
 		for i in url_list:
-			try :
-				response = requests.get(i)
-			except ChunkedEncodingError:
-				response = requests.get(i)
+			response = tryRequesting(i)
 			ht = BeautifulSoup(response.text,"lxml")
 			html_list.append(ht)
 			print(l)
 			l = l + 1
 	else:
-		response = requests.get(url)
+		response = tryRequesting(url)
 		ht = BeautifulSoup(response.text,"lxml")
 		html_list.append(ht)
 	return html_list
@@ -133,12 +148,7 @@ def getInformation(driver,html_list):
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
 		address_elements = i.find_all("h5",class_="sc-bc0f943e-12 kIDemC listing-detailed-item-address")
 		baf_elements = i.find_all("div",class_="sc-bc0f943e-13 bbhwop")
-		try:
-			url_elements_div = i.find("div",class_="sc-1384a2b8-6 jlmink")
-		except AttributeError:
-			i = reviseHTML(driver,i,l)
-			url_elements_div = i.find_all("div",class_="sc-1384a2b8-6 jlmink")
-		url_elements = url_elements_div.find_all("a")
+		url_elements = testHTML(driver,i,l)
 		img_url_div = i.find_all("div",class_="sc-4bb73884-5 hUtkPJ")
 		l = l + 1
 		for j in range(0,len(price_elements)):
@@ -146,11 +156,27 @@ def getInformation(driver,html_list):
 			pr = price_elements[j].decode_contents()
 			address = address_elements[j].get_text(strip = True)
 			baf_tag = baf_elements[j]
-			area = baf_tag.select("div:first-child")[0].get_text(strip=True)
-			bedrooms = baf_tag.select("div:nth-of-type(2)")[0].get_text(strip=True)
-			floor = baf_tag.select("div:nth-of-type(3)")[0].get_text(strip=True)
+			try:
+				area = baf_tag.select("div:first-child")[0].get_text(strip=True)
+			except:
+				print("no area")
+				area = '0'
+			try:
+				bedrooms = baf_tag.select("div:nth-of-type(2)")[0].get_text(strip=True)
+			except:
+				print("no bedrooms")
+				bedrooms = '0'
+			try:
+				floor = baf_tag.select("div:nth-of-type(3)")[0].get_text(strip=True)
+			except:
+				print("no floors")
+				floor = '0/0'
 			url = url_elements[j].get("href")
-			img_urls = img_url_div[0].find_all("img")
+			try:
+				img_urls = img_url_div[0].find_all("img")
+			except:
+				print("no images")
+				img_urls = []
 			elem_dict.update({"url": "https://home.ss.ge" + url})
 			elem_dict.update({"identifier": createIdentifier(url)})
 			elem_dict.update({"price($)":cleanInnerHTML(pr)})
@@ -159,7 +185,10 @@ def getInformation(driver,html_list):
 			elem_dict.update({"bedrooms":bedrooms})
 			elem_dict.update({"floor":floor})
 			for k in range(0,len(img_urls)):
-				elem_dict.update({f"Img{k+1}":img_urls[k]["src"]})
+				try:
+					elem_dict.update({f"Img{k+1}":img_urls[k]["src"]})
+				except:
+					print("No Picture")
 			info_list.append(elem_dict)
 	return info_list
 	
