@@ -149,7 +149,6 @@ def getInformation(driver,html_list):
 		address_elements = i.find_all("h5",class_="sc-bc0f943e-12 kIDemC listing-detailed-item-address")
 		baf_elements = i.find_all("div",class_="sc-bc0f943e-13 bbhwop")
 		url_elements = testHTML(driver,i,l)
-		img_url_div = i.find_all("div",class_="sc-4bb73884-5 hUtkPJ")
 		l = l + 1
 		for j in range(0,len(price_elements)):
 			elem_dict = dict()
@@ -172,11 +171,6 @@ def getInformation(driver,html_list):
 				print("no floors")
 				floor = '0/0'
 			url = url_elements[j].get("href")
-			try:
-				img_urls = img_url_div[0].find_all("img")
-			except:
-				print("no images")
-				img_urls = []
 			elem_dict.update({"url": "https://home.ss.ge" + url})
 			elem_dict.update({"identifier": createIdentifier(url)})
 			elem_dict.update({"price($)":cleanInnerHTML(pr)})
@@ -184,17 +178,29 @@ def getInformation(driver,html_list):
 			elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
 			elem_dict.update({"bedrooms":bedrooms})
 			elem_dict.update({"floor":floor})
-			for k in range(0,len(img_urls)):
-				try:
-					elem_dict.update({f"Img{k+1}":img_urls[k]["src"]})
-				except:
-					print("No Picture")
 			info_list.append(elem_dict)
 	return info_list
+
+def getImages(driver,info_list):
+	print("In getimages")
+	for apartment in info_list:
+		url = apartment["url"]
+		print(url)
+		driver.get(url)
+		try:
+			print("Fine 1")
+			images = driver.find_element(By.CSS_SELECTOR,".lg-react-element")
+			print("Fine 2")
+		except:
+			print("No images")
+		img_list = images.find_elements(By.TAG_NAME,"img")
+		print("Fine 3")
+		for i in range(0,len(img_list)):
+			print(len(img_list))
+			apartment.update({f"Img{i+1}":img_list[i].get_attribute("src")})
 	
 def infoEquality(info1, info2,filter_strength):
 	lim = 0
-
 	if(info1["price($)"] == info2["price($)"]):
 		lim = lim + 1
 	if(info1["area (m^2)"] == info2["area (m^2)"]):
@@ -203,12 +209,14 @@ def infoEquality(info1, info2,filter_strength):
 		lim = lim + 1
 	if(info1["floor"] == info2["floor"]):
 		lim = lim + 1
-	if(info1["Img1"] == info2["Img1"]):
-		lim = lim + 1
-	if(info1["Img2"] == info2["Img2"]):
-		lim = lim + 1
-	if(info1["Img3"] == info2["Img3"]):
-		lim = lim + 1
+	for i in range(0,len(info1)-4):
+		try:
+			a = info1[f"Img{i+1}"]
+			b = info2[f"Img{i+1}"]
+			if (a == b):
+				slim = lim + 1		
+		except:
+			print("No Comparison")
 	if (lim >= filter_strength and info1["address"] == info2["address"]):
 		return True
 	else:

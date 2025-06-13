@@ -2,6 +2,7 @@ from selenium import webdriver
 import time
 import infogetter as info
 import jsonwriter
+import datatohtml as dh
 import sys
 import gui as g
 import os
@@ -44,7 +45,12 @@ if __name__ == '__main__':
 	info.searchApartments(driver)
 	html_list = info.createHTMLList(driver)
 	info_list = info.getInformation(driver,html_list)
+	info.getImages(driver,info_list)
 	refined_info_list = info.filterInfoList(info_list,filter_strength)
+	display_html = dh.listToValidHTML(refined_info_list)
+	fl = open("test.html","w")
+	fl.write(display_html)
+	fl.close()
 	os.chdir('./databases')
 	jsonwriter.setName(type_of_purchase,building_location,filter_strength,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound)
 	jsonwriter.writeJSONFile(refined_info_list)
