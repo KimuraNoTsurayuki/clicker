@@ -45,7 +45,7 @@ if __name__ == '__main__':
 	info.searchApartments(driver)
 	html_list = info.createHTMLList(driver)
 	info_list = info.getInformation(driver,html_list)
-	info.getImages(driver,info_list)
+	info_list = info.getImages(driver,info_list)
 	refined_info_list = info.filterInfoList(info_list,filter_strength)
 	display_html = dh.listToValidHTML(refined_info_list)
 	fl = open("test.html","w")

@@ -91,7 +91,7 @@ def testHTML(driver,html,page_num):
 			response = requests.get(driver.current_url + f"&page={page_num + 1}")
 			print("Caught html")
 			html = BeautifulSoup(response.text,"lxml")
-	print(type(url_elements))
+	#print(type(url_elements))
 	return url_elements
 	
 def tryRequesting(url):
@@ -188,16 +188,13 @@ def getImages(driver,info_list):
 		print(url)
 		driver.get(url)
 		try:
-			print("Fine 1")
 			images = driver.find_element(By.CSS_SELECTOR,".lg-react-element")
-			print("Fine 2")
 		except:
 			print("No images")
 		img_list = images.find_elements(By.TAG_NAME,"img")
-		print("Fine 3")
 		for i in range(0,len(img_list)):
-			print(len(img_list))
 			apartment.update({f"Img{i+1}":img_list[i].get_attribute("src")})
+	return info_list
 	
 def infoEquality(info1, info2,filter_strength):
 	lim = 0
@@ -209,6 +206,7 @@ def infoEquality(info1, info2,filter_strength):
 		lim = lim + 1
 	if(info1["floor"] == info2["floor"]):
 		lim = lim + 1
+	"""
 	for i in range(0,len(info1)-4):
 		try:
 			a = info1[f"Img{i+1}"]
@@ -217,6 +215,7 @@ def infoEquality(info1, info2,filter_strength):
 				slim = lim + 1		
 		except:
 			print("No Comparison")
+	"""
 	if (lim >= filter_strength and info1["address"] == info2["address"]):
 		return True
 	else:
