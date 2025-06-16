@@ -189,11 +189,11 @@ def getImages(driver,info_list):
 		driver.get(url)
 		try:
 			images = driver.find_element(By.CSS_SELECTOR,".lg-react-element")
-		except:
-			print("No images")
 		img_list = images.find_elements(By.TAG_NAME,"img")
 		for i in range(0,len(img_list)):
 			apartment.update({f"Img{i+1}":img_list[i].get_attribute("src")})
+		except:
+			print("No images")
 	return info_list
 	
 def infoEquality(info1, info2,filter_strength):

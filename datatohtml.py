@@ -13,12 +13,13 @@ def listToValidHTML(ls):
 	res += "<title>" + "\n"
 	res += "placeholder" + "\n"
 	res += "</title>" + "\n"
-	res += "<style>"
-	res += "img{\n \t width:150px; \n \theight:150px; \n}"
-	res += ".container{\n \tborder: 2px;\n \t border-style: solid;\n\t border-radius: 3px;\n \tdisplay: flex; \n \t align-items: left;\n \t justify-content: left\n}"
-	res += "img::hover{\n \t display: .overlay-right;}\n"
-	res += ".text{\n \t font-family: \"Arial\"\n}"
-	res += "</style>"
+	res += "<style>" + "\n"
+	res += "img{\n \t width:150px; \n \theight:150px; \n}\n"
+	res += addContainerSettings()
+	res += ".text{\n \t font-family: \"Arial\";\n}\n"
+	res += addContainerOverlay()
+	res += addContainerHover()
+	res += "</style>" + "\n"
 	res += "</head>" + "\n"
 	res += "<body>" + "\n"
 	res += listToDivs(ls)
@@ -32,7 +33,6 @@ def listToDivs(ls):
 		res += "<div class = \"container\"> \n"
 		res += dictTool(dc) + "\n"
 		res += "</div> \n"
-		print(res)
 	return res
 
 def valuesToli(dc):
@@ -56,7 +56,7 @@ def dictTool(dc):
 		img_url = dc[f"Img{i+1}"]
 		a = '\t' + '\t' + f"<img src=\"{img_url}\" alt = \"placeholder\">" + "\n"
 		res += a
-	res += "<button type=\"overlay-right\" onclick=\"alert('Hello world!')\">Click Me!</button>"
+	res += "<button class=\"overlay\">Click Me!</button>" + "\n"
 	res += "\t </div> \n"
 	res += valuesToli(dc)
 	return res
@@ -97,3 +97,12 @@ def floorToli(dc):
 	res += floor + ": " + dc[floor]
 	res += " </li>"
 	return res
+	
+def addContainerOverlay():
+	return ".overlay {\n \tposition: relative;\n \ttop: 0;\n\tbottom: 0;\n\tleft: 0;\n\tright: 0;\n\topacity: 0; \n\ttransition: .5s ease;\n\tbackground-color: #008CBA;\n}\n"
+	
+def addContainerHover():
+	return ":hover .overlay {\n \t opacity: 1;\n}\n"
+
+def addContainerSettings():
+	return ".container{\n \tborder: 2px;\n \t border-style: solid;\n\t border-radius: 3px;\n \tdisplay: flex; \n \t align-items: left;\n \t justify-content: left;\n}\n"
