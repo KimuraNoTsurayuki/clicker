@@ -2,6 +2,9 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import time
 import requests
+import threading
+import concurrent.futures
+import functools
 from requests.exceptions import ChunkedEncodingError
 from lxml import etree
 from selenium.webdriver.common.by import By
@@ -181,20 +184,46 @@ def getInformation(driver,html_list):
 			info_list.append(elem_dict)
 	return info_list
 
-def getImages(driver,info_list):
-	print("In getimages")
+def getUrlsForImages(info_list):
+	url_list = []
+	print("Getting URLs for images")
 	for apartment in info_list:
 		url = apartment["url"]
-		print(url)
-		driver.get(url)
-		try:
-			images = driver.find_element(By.CSS_SELECTOR,".lg-react-element")
+		url_list.append(url)
+	return url_list
+	
+def collectImages(url):
+	a = dict()	
+	options = webdriver.ChromeOptions()
+	options.add_argument('--headless=new')
+	dr = webdriver.Chrome(options = options)
+	try:
+		dr.get(url)
+		images = dr.find_element(By.CSS_SELECTOR,".lg-react-element")
 		img_list = images.find_elements(By.TAG_NAME,"img")
 		for i in range(0,len(img_list)):
-			apartment.update({f"Img{i+1}":img_list[i].get_attribute("src")})
-		except:
-			print("No images")
-	return info_list
+			a.update({f"Img{i+1}":img_list[i].get_attribute("src")})
+	except:
+		print("No images")
+	return a 
+	
+def getImages(url_list):
+	res = []
+	with concurrent.futures.ThreadPoolExecutor(max_workers = 3) as executor:
+		futures = [executor.submit(collectImages,url) for url in url_list]
+		for f in futures:
+			res.append(f.result())
+	return res
+	
+def mergeLists(info_list,image_dicts_list):
+	res = []
+	if(len(info_list) == len(image_dicts_list)):
+		for i in range(0,len(info_list)):
+			z = info_list[i] | image_dicts_list[i]
+			res.append(z)
+	else:
+		print("you lose")	
+	return res
 	
 def infoEquality(info1, info2,filter_strength):
 	lim = 0
@@ -233,5 +262,5 @@ def filterInfoList(info_list,filter_strength):
 			res.append(info_list[k])
 	return res
 		
-		
-		
+#async def getAndSearch():
+	
