@@ -9,6 +9,42 @@ from requests.exceptions import ChunkedEncodingError
 from lxml import etree
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from datetime import date
+
+def reformatDateString(s):
+	res = str()
+	res += s[0:2]
+	month = s[3:6]
+	year = s[7:11]
+	match month:
+		case "იან":
+			res += f"/01/{year}"
+		case "თებ":
+			res += f"/02/{year}"
+		case "მარ":
+			res += f"/03/{year}"
+		case "აპრ":
+			res += f"/04/{year}"
+		case "მაი":
+			res += f"/05/{year}"
+		case "ივნ":
+			res += f"/06/{year}"
+		case "ივლ":
+			res += f"/07/{year}"
+		case "აგვ":
+			res += f"/08/{year}"
+		case "სექ":
+			res += f"/09/{year}"
+		case "ოქტ":
+			res += f"/10/{year}"
+		case "ნოე":
+			res += f"/11/{year}"
+		case "დეკ":
+			res += f"/12/{year}"
+		case "საა":
+			res = date.today().strftime("%d/%m/%Y")
+	return res
 
 def cleanInnerHTML(s):
 	r = str()
@@ -19,14 +55,20 @@ def cleanInnerHTML(s):
 			break
 	return r
 
+def numbersOnly(s):
+	r = str()
+	for i in s:
+		if(i.isnumeric()):
+			r += i
+	return r
+	
 def choosePurchaseType(driver, pt):
 	match pt:
 		#1 is sale. 2 is rent.
 		case "1":
-			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-53:nth-child(1)").click()
+			print("For Sale")
 		case "2":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-53:nth-child(2)").click()
-
 
 def chooseBuildingType(driver,building_type):
 	driver.find_element(By.CLASS_NAME, "icon-chair").click()
@@ -42,6 +84,7 @@ def chooseBuildingType(driver,building_type):
 	b = driver.find_element(By.XPATH,"/html/body/div[1]/main/div/div[2]/div/div[2]/div/div/div[2]/div[3]/button[2]")
 	b.click()
 
+
 def chooseLocation(driver,building_location):
 	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-0:nth-child(2)").click()
 	driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
@@ -49,14 +92,31 @@ def chooseLocation(driver,building_location):
 		case "1":
 			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(3)")
 		case "2":
-			property_location = driver.find_element(By.CSS_SELECTOR, ".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(11)")
+			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(11)")
+		case "3":
+			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)")
+		case "4":
+			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)")
+		case "5":
+			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)")
+		case "6":
+			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(4) > div:nth-child(1) > div:nth-child(1)")
+		case "7":
+			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(5) > div:nth-child(1) > div:nth-child(1)")
 	property_location.click()
-	driver.find_element(By.CSS_SELECTOR,".ieRIPq").click()
+	driver.find_element(By.CSS_SELECTOR,".ifgFgM").click()
 
-def chooseSurfaceArea(driver,lower_area_bound,upper_area_bound):
+def chooseSurfaceArea(driver,lower_area_bound,upper_area_bound,rooms = 0):
 	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-0:nth-child(3) > span:nth-child(2)").click()
 	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-46:nth-child(1) > input:nth-child(1)").send_keys(lower_area_bound)
 	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-46:nth-child(2) > input:nth-child(1)").send_keys(upper_area_bound)
+	a = (rooms == 6)
+	if(rooms > 0):
+		match a:
+			case True:
+				driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-48:nth-child(6)").click()
+			case False:
+				driver.find_element(By.CSS_SELECTOR,f"div.sc-dbb89033-48:nth-child({rooms})").click()
 	driver.find_element(By.CSS_SELECTOR, ".sc-dbb89033-49 > button:nth-child(2)").click()
 
 
@@ -66,13 +126,35 @@ def choosePriceRange(driver,lower_price_bound,upper_price_bound):
 	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-46:nth-child(1) > input:nth-child(1)").send_keys(lower_price_bound)
 	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-46:nth-child(2) > input:nth-child(1)").send_keys(upper_price_bound)
 	driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-49 > button:nth-child(2)").click()
+	
+
+
+def selectOnlyRefurbished(driver,bedrooms_min = 0, bedrooms_max = 0):
+	driver.find_element(By.CSS_SELECTOR,".hnQkWA").click()
+	a = driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-23:nth-child(14) > div:nth-child(4)")
+	ActionChains(driver)\
+		.scroll_to_element(a)\
+		.perform()
+	a.click()
+	print(bedrooms_min)
+	print(bedrooms_max)
+	if(bedrooms_min > 0):
+		b = driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-24:nth-child(15) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > input:nth-child(1)")
+		ActionChains(driver)\
+			.scroll_to_element(b)\
+			.perform()	
+		b.send_keys(bedrooms_min)
+	if(bedrooms_max > 0):	
+		driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-24:nth-child(15) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > input:nth-child(1)").send_keys(bedrooms_max)
+	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-23:nth-child(14) > div:nth-child(5)").click()
+	driver.find_element(By.CSS_SELECTOR,".ifgFgM").click()
 
 def insertTextString(driver,text):
 	if(len(text) > 0):
 		driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-3").send_keys(text)
 
 def searchApartments(driver):
-	driver.find_element(By.CSS_SELECTOR,"button.dICGws:nth-child(1)").click()
+	driver.find_element(By.CSS_SELECTOR,"button.hMWxyW:nth-child(1)").click()
 #-------------------
 def writeInfoInFile(data,name):
 	f = open(name,"w")
@@ -84,8 +166,9 @@ def createIdentifier(url):
 
 #-------------------------------------------	
 def testHTML(driver,html,page_num):
-	rets = 5
+	rets = 20
 	res = None
+	url_elements = []
 	for i in range(0,rets):
 		try:
 			url_elements_div = html.find("div",class_="sc-1384a2b8-6 jlmink")
@@ -113,12 +196,14 @@ def createHTMLList(driver):
 	print("Creating list")
 	html_list = []
 	url_list = []
-	try:
-		limit_getter = driver.find_element(By.CSS_SELECTOR,".sc-1384a2b8-9")
-		limit_elements = limit_getter.find_elements(By.TAG_NAME,"div")
-		lim = limit_elements[-2].get_attribute("innerHTML")
-	except:
-		lim = '0'
+	attempts = 10
+	for i in range(0,attempts):
+		try:	
+			limit_getter = driver.find_element(By.CSS_SELECTOR,".sc-1384a2b8-9")
+			limit_elements = limit_getter.find_elements(By.TAG_NAME,"div")
+			lim = limit_elements[-2].get_attribute("innerHTML")
+		except:
+			lim = '0'
 	print("limit is " + lim)
 	url = driver.current_url
 	l = 0
@@ -145,19 +230,21 @@ def createHTMLList(driver):
 def getInformation(driver,html_list):
 	print("In getinfo")
 	info_list = []
-	l = 0
-	for i in html_list:
-		print(l)
+	for index,i in enumerate(html_list):
+		print(index)
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
 		address_elements = i.find_all("h5",class_="sc-bc0f943e-12 kIDemC listing-detailed-item-address")
 		baf_elements = i.find_all("div",class_="sc-bc0f943e-13 bbhwop")
-		url_elements = testHTML(driver,i,l)
-		l = l + 1
+		url_elements = testHTML(driver,i,index)
+		room_elements = i.find_all("h2",class_="sc-6e54cb25-3 gxoxbm listing-detailed-item-title")
+		date_elements = i.find_all("div", class_= "create-date")
 		for j in range(0,len(price_elements)):
 			elem_dict = dict()
 			pr = price_elements[j].decode_contents()
 			address = address_elements[j].get_text(strip = True)
 			baf_tag = baf_elements[j]
+			room_num = room_elements[j].get_text(strip = True)
+			date = reformatDateString(date_elements[j].get_text())
 			try:
 				area = baf_tag.select("div:first-child")[0].get_text(strip=True)
 			except:
@@ -173,15 +260,21 @@ def getInformation(driver,html_list):
 			except:
 				print("no floors")
 				floor = '0/0'
-			url = url_elements[j].get("href")
-			elem_dict.update({"url": "https://home.ss.ge" + url})
-			elem_dict.update({"identifier": createIdentifier(url)})
-			elem_dict.update({"price($)":cleanInnerHTML(pr)})
-			elem_dict.update({"address":address})
-			elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
-			elem_dict.update({"bedrooms":bedrooms})
-			elem_dict.update({"floor":floor})
-			info_list.append(elem_dict)
+			try:	
+				url = url_elements[j].get("href")
+				elem_dict.update({"url": "https://home.ss.ge" + url})
+				elem_dict.update({"identifier": createIdentifier(url)})
+				elem_dict.update({"date": date})
+				elem_dict.update({"price($)":cleanInnerHTML(pr)})
+				elem_dict.update({"address":address})
+				elem_dict.update({"rooms":numbersOnly(room_num)})
+				elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
+				elem_dict.update({"bedrooms":bedrooms})
+				elem_dict.update({"floor":floor})
+				info_list.append(elem_dict)
+			except:
+				print("one omitted")
+				
 	return info_list
 
 def getUrlsForImages(info_list):
@@ -191,7 +284,7 @@ def getUrlsForImages(info_list):
 		url = apartment["url"]
 		url_list.append(url)
 	return url_list
-	
+	"""
 def collectImages(url):
 	a = dict()	
 	options = webdriver.ChromeOptions()
@@ -206,15 +299,14 @@ def collectImages(url):
 	except:
 		print("No images")
 	return a 
-	
+	"""
 def getImages(url_list):
 	res = []
-	with concurrent.futures.ThreadPoolExecutor(max_workers = 3) as executor:
+	with concurrent.futures.ThreadPoolExecutor(max_workers = 2) as executor:
 		futures = [executor.submit(collectImages,url) for url in url_list]
 		for f in futures:
 			res.append(f.result())
 	return res
-	
 def mergeLists(info_list,image_dicts_list):
 	res = []
 	if(len(info_list) == len(image_dicts_list)):
@@ -222,7 +314,7 @@ def mergeLists(info_list,image_dicts_list):
 			z = info_list[i] | image_dicts_list[i]
 			res.append(z)
 	else:
-		print("you lose")	
+		res = info_list	
 	return res
 	
 def infoEquality(info1, info2,filter_strength):
