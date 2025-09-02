@@ -1,6 +1,6 @@
 import sys
 import infogetter as info
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QTextEdit, QPlainTextEdit,QPushButton,QGridLayout,QHBoxLayout
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QTextEdit, QPlainTextEdit,QPushButton,QGridLayout,QHBoxLayout,QComboBox
 
 building_type_to_send = str()
 building_location_to_send = str()
@@ -11,6 +11,9 @@ area_to_send_upper = 0
 price_to_send_lower = 0
 price_to_send_upper = 0
 filter_strength = 0
+rooms = 0
+bedrooms_min = 0
+bedrooms_max = 0
 
 class BasicGUI(QWidget):
 	def __init__(self):
@@ -27,12 +30,25 @@ class BasicGUI(QWidget):
 		self.maxsurf = QLineEdit()
 		self.minamount = QLineEdit()
 		self.maxamount = QLineEdit()
+		self.amountrooms = QLineEdit()
+		self.minamountbedrooms = QLineEdit()
+		self.maxamountbedrooms = QLineEdit()
 		self.filterstrength = QLineEdit()
 		self.textsearch = QLineEdit()
+		self.locations = QComboBox()
+		
+		self.locations.addItem("Vake Only")
+		self.locations.addItem("Saburtalo Only")
+		self.locations.addItem("Both Vake and Saburtalo")
+		self.locations.addItem("Isani-Samgori")
+		self.locations.addItem("Gldani-Nadzaladevi")
+		self.locations.addItem("Didube-Chugureti")
+		self.locations.addItem("Old Tbilisi")
+		
+		
+
 
 		self.enter_button = QPushButton("Enter")
-		self.vake_button = QPushButton("Vake")
-		self.saburtalo_button = QPushButton("Saburtalo")	
 		self.new_building_button = QPushButton("New Building")
 		self.old_building_button = QPushButton("Old Building")
 		self.being_constructed = QPushButton("In Construction")
@@ -45,10 +61,13 @@ class BasicGUI(QWidget):
 		self.minamount.setPlaceholderText("Price Minimum")
 		self.maxamount.setPlaceholderText("Price Maximum")
 		self.textsearch.setPlaceholderText("Enter text for search")
-		self.filterstrength.setPlaceholderText("Set Filter Strength. Lower number filters more. 2<= str <= 7")	
+		self.filterstrength.setPlaceholderText("Set Filter Strength. Lower number filters more. 2 <= str <= 7")	
+		self.amountrooms.setPlaceholderText("Amount Of Rooms")
+		self.minamountbedrooms.setPlaceholderText("Minimum bedroom count")
+		self.maxamountbedrooms.setPlaceholderText("Maximum bedroom count")
 		
-		self.vake_button.clicked.connect(self.setVake)
-		self.saburtalo_button.clicked.connect(self.setSaburtalo)
+		
+
 		self.new_building_button.clicked.connect(self.setNewBuilding)
 		self.old_building_button.clicked.connect(self.setOldBuilding)
 		self.being_constructed.clicked.connect(self.setInConstruction)
@@ -61,10 +80,12 @@ class BasicGUI(QWidget):
 		self.layout.addWidget(self.maxsurf)
 		self.layout.addWidget(self.minamount)
 		self.layout.addWidget(self.maxamount)
+		self.layout.addWidget(self.amountrooms)
+		self.layout.addWidget(self.minamountbedrooms)
+		self.layout.addWidget(self.maxamountbedrooms)
 		self.layout.addWidget(self.textsearch)
 		self.layout.addWidget(self.filterstrength)
-		self.layout2.addWidget(self.vake_button)
-		self.layout2.addWidget(self.saburtalo_button)
+		self.layout.addWidget(self.locations)
 		self.layout3.addWidget(self.new_building_button)
 		self.layout3.addWidget(self.old_building_button)
 		self.layout3.addWidget(self.being_constructed)
@@ -77,16 +98,28 @@ class BasicGUI(QWidget):
 		self.layout.addLayout(self.layout4)
 		self.layout.addLayout(self.layout5)
 		self.setLayout(self.layout)
-		self.setWindowTitle(QApplication.translate("toplevel","AIC"))
+		self.setWindowTitle(QApplication.translate("toplevel","Clicker"))
 		
-	def setVake(self):
-		global building_location_to_send
-		building_location_to_send = "2"
-	
-	def setSaburtalo(self):
-		global building_location_to_send
-		building_location_to_send = "1"
 
+	def getComboTextPlaces(self):
+		global building_location_to_send
+		text = self.locations.currentText()
+		match text:
+			case "Saburtalo Only":
+				building_location_to_send = "1"
+			case "Vake Only":
+				building_location_to_send = "2"
+			case "Both Vake and Saburtalo":
+				building_location_to_send = "3"
+			case "Isani-Samgori":
+				building_location_to_send = "4"
+			case "Gldani-Nadzaladevi":
+				building_location_to_send = "5"
+			case "Didube-Chugureti":
+				building_location_to_send = "6"
+			case "Old Tbilisi":
+				building_location_to_send = "7"
+		
 	def setNumericalValues(self):
 		self.setLowerAreaBound()
 		self.setUpperAreaBound()
@@ -94,6 +127,10 @@ class BasicGUI(QWidget):
 		self.setUpperPriceBound()
 		self.setTextSearch()
 		self.setFilterStrength()
+		self.getComboTextPlaces()
+		self.setRoomAmount()
+		self.setMinBedroomAmount()
+		self.setMaxBedroomAmount()
 		QApplication.quit()		
 		
 	def setNewBuilding(self):
@@ -139,4 +176,12 @@ class BasicGUI(QWidget):
 	def setTextSearch(self):
 		global search_text
 		search_text = self.textsearch.text()	
-		
+	def setRoomAmount(self):
+		global rooms
+		rooms = int(self.amountrooms.text())
+	def setMinBedroomAmount(self):
+		global bedrooms_min
+		bedrooms_min = int(self.minamountbedrooms.text())
+	def setMaxBedroomAmount(self):
+		global bedrooms_max
+		bedrooms_max = int(self.maxamountbedrooms.text())	

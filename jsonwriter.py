@@ -2,9 +2,30 @@ import json
 
 filename = str()
 
-def setName(type_purchase,place, filter_strength,lower_price, upper_price, lower_area, upper_area):
+def setName(date,type_purchase,place, filter_strength,lower_price, upper_price, lower_area, upper_area,disc = str()):
 	global filename 
-	filename = "database_" + type_purchase + "_" + place + "_" + str(filter_strength) + "_"+ str(lower_price) + "_" + str(upper_price) + "_" + str(lower_area) + "_" + str(upper_area) + ".json"
+	filename = f"database_{date}_"
+	match type_purchase:
+		case "1":
+			filename += "sale_"
+		case "2":
+			filename += "rent_"
+	match place:
+		case "1":
+			filename += "Saburtalo_"
+		case "2":
+			filename += "Vake_"
+		case "3":
+			filename += "Vake-Saburtalo_"
+		case "4":
+			filename += "Isani-Samgori_"
+		case "5":
+			filename += "Gldani-Nadzaladevi_"
+		case "6":
+			filename += "Didube-Chugureti_"
+		case "7":
+			filename += "Old-Tbilisi_"
+	filename += str(filter_strength) + "_"+ str(lower_price) + "_" + str(upper_price) + "_" + str(lower_area) + "_" + str(upper_area) + disc + ".json"
 
 def writeJSONFile(arr):
 	json_object = json.dumps(arr,indent =4)
