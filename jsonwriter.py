@@ -2,7 +2,7 @@ import json
 
 filename = str()
 
-def setName(date,type_purchase,place, filter_strength,lower_price, upper_price, lower_area, upper_area,disc = str()):
+def setName(date, type_purchase, place, building_age ,filter_strength, lower_price, upper_price, lower_area, upper_area, disc = str()):
 	global filename 
 	filename = f"database_{date}_"
 	match type_purchase:
@@ -25,7 +25,14 @@ def setName(date,type_purchase,place, filter_strength,lower_price, upper_price, 
 			filename += "Didube-Chugureti_"
 		case "7":
 			filename += "Old-Tbilisi_"
-	filename += str(filter_strength) + "_"+ str(lower_price) + "_" + str(upper_price) + "_" + str(lower_area) + "_" + str(upper_area) + disc + ".json"
+	match building_age:
+		case "1":
+			filename += "New_"
+		case "2" 
+			filename += "Old_"
+		case "3":
+			filename += "Construction_"
+	filename += str(filter_strength) + "_"+ str(lower_price) + "_" + str(upper_price) + "_" + str(lower_area) + "_" + str(upper_area) + "_" + disc + ".json"
 
 def writeJSONFile(arr):
 	json_object = json.dumps(arr,indent =4)

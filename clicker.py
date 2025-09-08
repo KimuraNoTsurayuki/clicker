@@ -65,7 +65,7 @@ if __name__ == '__main__':
 	#fl.write(display_html)
 	#fl.close()
 	os.chdir('./databases')
-	jsonwriter.setName(date_str,type_of_purchase,building_location,filter_strength,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound,"filtered")
+	jsonwriter.setName(date_str,type_of_purchase,building_location,building_type,filter_strength,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound,"filtered")
 	jsonwriter.writeJSONFile(refined_info_list)
 	#jsonwriter.setName(type_of_purchase,building_location,filter_strength,price_lower_bound,price_upper_bound,area_lower_bound,area_upper_bound,"unfiltered")
 	#jsonwriter.writeJSONFile(info_list)
