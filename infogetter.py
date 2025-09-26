@@ -103,6 +103,10 @@ def chooseLocation(driver,building_location):
 			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(4) > div:nth-child(1) > div:nth-child(1)")
 		case "7":
 			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(5) > div:nth-child(1) > div:nth-child(1)")
+		case "8":
+			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(9) > div:nth-child(1)")
+		case "9":
+			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(6) > div:nth-child(1) > svg:nth-child(1)")
 	property_location.click()
 	driver.find_element(By.CSS_SELECTOR,".ifgFgM").click()
 

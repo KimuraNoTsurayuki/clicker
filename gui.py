@@ -44,7 +44,8 @@ class BasicGUI(QWidget):
 		self.locations.addItem("Gldani-Nadzaladevi")
 		self.locations.addItem("Didube-Chugureti")
 		self.locations.addItem("Old Tbilisi")
-		
+		self.locations.addItem("Dighomi")
+		self.locations.addItem("Lisi")
 		
 
 
@@ -119,6 +120,10 @@ class BasicGUI(QWidget):
 				building_location_to_send = "6"
 			case "Old Tbilisi":
 				building_location_to_send = "7"
+			case "Dighomi":
+				building_location_to_send = "8"
+			case "Lisi":
+				building_location_to_send = "9"
 		
 	def setNumericalValues(self):
 		self.setLowerAreaBound()

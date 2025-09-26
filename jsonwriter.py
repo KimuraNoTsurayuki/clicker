@@ -25,10 +25,14 @@ def setName(date, type_purchase, place, building_age ,filter_strength, lower_pri
 			filename += "Didube-Chugureti_"
 		case "7":
 			filename += "Old-Tbilisi_"
+		case "8":
+			filename += "Dighomi_"
+		case "9":
+			filename += "Lisi_"
 	match building_age:
 		case "1":
 			filename += "New_"
-		case "2" 
+		case "2": 
 			filename += "Old_"
 		case "3":
 			filename += "Construction_"
