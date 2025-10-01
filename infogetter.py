@@ -90,24 +90,26 @@ def chooseLocation(driver,building_location):
 	driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 	match building_location:
 		case "1":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(3)")
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(3)").click()
 		case "2":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(11)")
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(11)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(5) > div:nth-child(1)")
 		case "3":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)")
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)").click()
 		case "4":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)")
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)").click()
 		case "5":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)")
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)").click()
 		case "6":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(4) > div:nth-child(1) > div:nth-child(1)")
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(4) > div:nth-child(1) > div:nth-child(1)").click()
 		case "7":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(5) > div:nth-child(1) > div:nth-child(1)")
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(5) > div:nth-child(1) > div:nth-child(1)").click()
 		case "8":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(9) > div:nth-child(1)")
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(9) > div:nth-child(1)").click()
 		case "9":
-			property_location = driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(6) > div:nth-child(1) > svg:nth-child(1)")
-	property_location.click()
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(6) > div:nth-child(1) > svg:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(10) > div:nth-child(1)").click()
 	driver.find_element(By.CSS_SELECTOR,".ifgFgM").click()
 
 def chooseSurfaceArea(driver,lower_area_bound,upper_area_bound,rooms = 0):
@@ -269,12 +271,12 @@ def getInformation(driver,html_list):
 				elem_dict.update({"url": "https://home.ss.ge" + url})
 				elem_dict.update({"identifier": createIdentifier(url)})
 				elem_dict.update({"date": date})
-				elem_dict.update({"price($)":cleanInnerHTML(pr)})
+				elem_dict.update({"price_usd":cleanInnerHTML(pr)})
 				elem_dict.update({"address":address})
 				elem_dict.update({"rooms":numbersOnly(room_num)})
-				elem_dict.update({"area (m^2)":cleanInnerHTML(area)})
+				elem_dict.update({"area_m2":cleanInnerHTML(area)})
 				elem_dict.update({"bedrooms":bedrooms})
-				elem_dict.update({"floor":floor})
+				elem_dict.update({"floor_raw":floor})
 				info_list.append(elem_dict)
 			except:
 				print("one omitted")
