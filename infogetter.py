@@ -87,29 +87,55 @@ def chooseBuildingType(driver,building_type):
 
 def chooseLocation(driver,building_location):
 	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-0:nth-child(2)").click()
-	driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 	match building_location:
 		case "1":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()		
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(3)").click()
 		case "2":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(11)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(5) > div:nth-child(1)")
 		case "3":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)").click()
 		case "4":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)").click()
 		case "5":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)").click()
 		case "6":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(4) > div:nth-child(1) > div:nth-child(1)").click()
 		case "7":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(5) > div:nth-child(1) > div:nth-child(1)").click()
 		case "8":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(9) > div:nth-child(1)").click()
 		case "9":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(6) > div:nth-child(1) > svg:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1)").click()
 			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(10) > div:nth-child(1)").click()
+		case "10":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-35 > div:nth-child(1)").click()
+		case "11":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(9)").click()
+		case "12":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(12)").click()
+		case "13":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(5)").click()
+		case "14":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(8)").click()
+		case "15":
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(10)").click()
 	driver.find_element(By.CSS_SELECTOR,".ifgFgM").click()
 
 def chooseSurfaceArea(driver,lower_area_bound,upper_area_bound,rooms = 0):
@@ -239,8 +265,8 @@ def getInformation(driver,html_list):
 	for index,i in enumerate(html_list):
 		print(index)
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
-		address_elements = i.find_all("h5",class_="sc-bc0f943e-12 kIDemC listing-detailed-item-address")
-		baf_elements = i.find_all("div",class_="sc-bc0f943e-13 bbhwop")
+		address_elements = i.find_all("h5",class_="sc-addc1f74-12 JiNtQ listing-detailed-item-address")
+		baf_elements = i.find_all("div",class_="sc-addc1f74-13 cvQnPz")
 		url_elements = testHTML(driver,i,index)
 		room_elements = i.find_all("h2",class_="sc-6e54cb25-3 gxoxbm listing-detailed-item-title")
 		date_elements = i.find_all("div", class_= "create-date")
@@ -325,13 +351,13 @@ def mergeLists(info_list,image_dicts_list):
 	
 def infoEquality(info1, info2,filter_strength):
 	lim = 0
-	if(info1["price($)"] == info2["price($)"]):
+	if(info1["price_usd"] == info2["price_usd"]):
 		lim = lim + 1
-	if(info1["area (m^2)"] == info2["area (m^2)"]):
+	if(info1["area_m2"] == info2["area_m2"]):
 		lim = lim + 1
 	if(info1["bedrooms"] == info2["bedrooms"]):
 		lim = lim + 1
-	if(info1["floor"] == info2["floor"]):
+	if(info1["floor_raw"] == info2["floor_raw"]):
 		lim = lim + 1
 	"""
 	for i in range(0,len(info1)-4):

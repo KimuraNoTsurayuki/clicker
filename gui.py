@@ -46,6 +46,13 @@ class BasicGUI(QWidget):
 		self.locations.addItem("Old Tbilisi")
 		self.locations.addItem("Dighomi")
 		self.locations.addItem("Lisi")
+		self.locations.addItem("All of Batumi")
+		self.locations.addItem("Old Batumi")
+		self.locations.addItem("Makhinjauri")
+		self.locations.addItem("Boni-Gorodoki")
+		self.locations.addItem("Rustaveli-Batumi")
+		self.locations.addItem("Khimshiashvili")
+
 		
 
 
@@ -124,7 +131,18 @@ class BasicGUI(QWidget):
 				building_location_to_send = "8"
 			case "Lisi":
 				building_location_to_send = "9"
-		
+			case "All of Batumi":
+				building_location_to_send = "10"
+			case "Old Batumi":
+				building_location_to_send = "11"
+			case "Makhinjauri":
+				building_location_to_send = "12"
+			case "Boni-Gorodoki":
+				building_location_to_send = "13"
+			case "Rustaveli-Batumi":
+				building_location_to_send = "14"
+			case "Khimshiashvili":
+				building_location_to_send = "15"
 	def setNumericalValues(self):
 		self.setLowerAreaBound()
 		self.setUpperAreaBound()
