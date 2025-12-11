@@ -13,37 +13,42 @@ from selenium.webdriver.common.action_chains import ActionChains
 from datetime import date
 
 def reformatDateString(s):
-	res = str()
-	res += s[0:2]
-	month = s[3:6]
-	year = s[7:11]
-	match month:
-		case "იან":
-			res += f"/01/{year}"
-		case "თებ":
-			res += f"/02/{year}"
-		case "მარ":
-			res += f"/03/{year}"
-		case "აპრ":
-			res += f"/04/{year}"
-		case "მაი":
-			res += f"/05/{year}"
-		case "ივნ":
-			res += f"/06/{year}"
-		case "ივლ":
-			res += f"/07/{year}"
-		case "აგვ":
-			res += f"/08/{year}"
-		case "სექ":
-			res += f"/09/{year}"
-		case "ოქტ":
-			res += f"/10/{year}"
-		case "ნოე":
-			res += f"/11/{year}"
-		case "დეკ":
-			res += f"/12/{year}"
-		case "საა":
-			res = date.today().strftime("%d/%m/%Y")
+	res = "0"
+	if(len(s) == 11 and s.find('წინ') == -1):
+		dd = s[:2]
+		mm = s[3:6]
+		yy = s[7:]
+		di = int(dd)
+		mi = 0
+		yi = int(yy)
+		match mm:
+			case 'იან':
+				mi = 1
+			case 'თებ':
+				mi = 2
+			case 'მარ':
+				mi = 3
+			case 'აპრ':
+				mi = 4
+			case 'მაი':
+				mi = 5
+			case 'ივნ':
+				mi = 6
+			case 'ივლ':
+				mi = 7
+			case 'აგვ':
+				mi = 8
+			case 'სექ':
+				mi = 9
+			case 'ოქტ':
+				mi = 10
+			case 'ნოე':
+				mi = 11
+			case 'დეკ':
+				mi = 12
+		difference = date.today() - date(yi,mi,di)
+		res = str(difference.days) 
+	print('res: ' + res)
 	return res
 
 def cleanInnerHTML(s):
