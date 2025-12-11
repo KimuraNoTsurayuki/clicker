@@ -69,6 +69,7 @@ def choosePurchaseType(driver, pt):
 			print("For Sale")
 		case "2":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-53:nth-child(2)").click()
+			print("Purchase type ok")
 
 def chooseBuildingType(driver,building_type):
 	driver.find_element(By.CLASS_NAME, "icon-chair").click()
@@ -83,65 +84,82 @@ def chooseBuildingType(driver,building_type):
 	building_elements.click()
 	b = driver.find_element(By.XPATH,"/html/body/div[1]/main/div/div[2]/div/div[2]/div/div/div[2]/div[3]/button[2]")
 	b.click()
+	print("Building Type OK")
 
 
 def chooseLocation(driver,building_location):
-	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-0:nth-child(2)").click()
+	driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-0:nth-child(2)").click()
 	match building_location:
 		case "1":
-			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()		
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(3)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > svg:nth-child(1)").click()
+			
 		case "2":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(11)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(5) > div:nth-child(1)")
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(1) > div:nth-child(11) > div:nth-child(1) > svg:nth-child(1)").click()
+			
 		case "3":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > svg:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(1) > div:nth-child(11) > div:nth-child(1) > svg:nth-child(1)").click()
+			
 		case "4":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1)").click()
+			
 		case "5":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(3) > div:nth-child(1) > div:nth-child(1)").click()
+			
 		case "6":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(4) > div:nth-child(1) > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(4) > div:nth-child(1) > div:nth-child(1)").click()
+			
 		case "7":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(5) > div:nth-child(1) > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(5) > div:nth-child(1) > div:nth-child(1)").click()
+			
 		case "8":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(9) > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(1) > div:nth-child(9) > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(1) > div:nth-child(10) > div:nth-child(1)").click()
+			
 		case "9":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(1) > div:nth-child(6) > div:nth-child(1) > svg:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-39 > div:nth-child(3) > div:nth-child(10) > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-39 > div:nth-child(1) > div:nth-child(6) > div:nth-child(1)").click()
+			
 		case "10":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
-			driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-35 > div:nth-child(1)").click()
+			driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-35 > div:nth-child(1)").click()
+			
 		case "11":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
-			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(9)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-34:nth-child(9) > div:nth-child(1)").click()
+			
 		case "12":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
-			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(12)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-34:nth-child(12)").click()
+			
 		case "13":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
-			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(5)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-34:nth-child(5) > div:nth-child(1)").click()
+			
 		case "14":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
-			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(8)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-34:nth-child(8) > div:nth-child(1)").click()
+			
 		case "15":
 			driver.find_element(By.CSS_SELECTOR,"div.sc-3cdbea70-0:nth-child(2)").click()
-			driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-34:nth-child(10)").click()
+			driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-34:nth-child(10) > div:nth-child(1)").click()
+			
 	driver.find_element(By.CSS_SELECTOR,".ifgFgM").click()
+	print("Location OK")
 
 def chooseSurfaceArea(driver,lower_area_bound,upper_area_bound,rooms = 0):
-	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-0:nth-child(3) > span:nth-child(2)").click()
-	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-46:nth-child(1) > input:nth-child(1)").send_keys(lower_area_bound)
-	driver.find_element(By.CSS_SELECTOR, "div.sc-dbb89033-46:nth-child(2) > input:nth-child(1)").send_keys(upper_area_bound)
+	driver.find_element(By.CSS_SELECTOR, "div.sc-d0e1139e-0:nth-child(3)").click()
+	driver.find_element(By.CSS_SELECTOR, "div.sc-d0e1139e-47:nth-child(1) > input:nth-child(1)").send_keys(lower_area_bound)
+	driver.find_element(By.CSS_SELECTOR, "div.sc-d0e1139e-47:nth-child(2) > input:nth-child(1)").send_keys(upper_area_bound)
+	print("Surface area partly ok")
 	a = (rooms == 6)
 	if(rooms > 0):
 		match a:
@@ -149,36 +167,30 @@ def chooseSurfaceArea(driver,lower_area_bound,upper_area_bound,rooms = 0):
 				driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-48:nth-child(6)").click()
 			case False:
 				driver.find_element(By.CSS_SELECTOR,f"div.sc-dbb89033-48:nth-child({rooms})").click()
-	driver.find_element(By.CSS_SELECTOR, ".sc-dbb89033-49 > button:nth-child(2)").click()
+	driver.find_element(By.CSS_SELECTOR, ".sc-d0e1139e-50 > button:nth-child(2)").click()
+	print("Surface Area OK")
 
 
 def choosePriceRange(driver,lower_price_bound,upper_price_bound):
-	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-0:nth-child(4) > span:nth-child(2)").click()
-	driver.find_element(By.CSS_SELECTOR,".currency-box > span:nth-child(3)").click()
-	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-46:nth-child(1) > input:nth-child(1)").send_keys(lower_price_bound)
-	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-46:nth-child(2) > input:nth-child(1)").send_keys(upper_price_bound)
-	driver.find_element(By.CSS_SELECTOR,".sc-dbb89033-49 > button:nth-child(2)").click()
-	
+	driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-0:nth-child(4)").click()
+	driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-47:nth-child(1) > input:nth-child(1)").send_keys(lower_price_bound)
+	driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-47:nth-child(2) > input:nth-child(1)").send_keys(upper_price_bound)
+	driver.find_element(By.CSS_SELECTOR,".sc-d0e1139e-50 > button:nth-child(2)").click()
+	print("Price range OK")
 
 
 def selectOnlyRefurbished(driver,bedrooms_min = 0, bedrooms_max = 0):
 	driver.find_element(By.CSS_SELECTOR,".hnQkWA").click()
-	a = driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-23:nth-child(14) > div:nth-child(4)")
-	ActionChains(driver)\
-		.scroll_to_element(a)\
-		.perform()
-	a.click()
 	print(bedrooms_min)
 	print(bedrooms_max)
 	if(bedrooms_min > 0):
-		b = driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-24:nth-child(15) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > input:nth-child(1)")
+		b = driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-24:nth-child(15) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > input:nth-child(1)")
 		ActionChains(driver)\
 			.scroll_to_element(b)\
 			.perform()	
 		b.send_keys(bedrooms_min)
 	if(bedrooms_max > 0):	
-		driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-24:nth-child(15) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > input:nth-child(1)").send_keys(bedrooms_max)
-	driver.find_element(By.CSS_SELECTOR,"div.sc-dbb89033-23:nth-child(14) > div:nth-child(5)").click()
+		driver.find_element(By.CSS_SELECTOR,"div.sc-d0e1139e-24:nth-child(15) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > input:nth-child(1)").send_keys(bedrooms_max)
 	driver.find_element(By.CSS_SELECTOR,".ifgFgM").click()
 
 def insertTextString(driver,text):
@@ -265,8 +277,8 @@ def getInformation(driver,html_list):
 	for index,i in enumerate(html_list):
 		print(index)
 		price_elements = i.find_all("span", class_="sc-6e54cb25-2 cikpcz listing-detailed-item-price")
-		address_elements = i.find_all("h5",class_="sc-addc1f74-12 JiNtQ listing-detailed-item-address")
-		baf_elements = i.find_all("div",class_="sc-addc1f74-13 cvQnPz")
+		address_elements = i.find_all("h5",class_="sc-6a44cedd-12 otbuX listing-detailed-item-address")
+		baf_elements = i.find_all("div",class_="sc-6a44cedd-14 kWMcbj")
 		url_elements = testHTML(driver,i,index)
 		room_elements = i.find_all("h2",class_="sc-6e54cb25-3 gxoxbm listing-detailed-item-title")
 		date_elements = i.find_all("div", class_= "create-date")
